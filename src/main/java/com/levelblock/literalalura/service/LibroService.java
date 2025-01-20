@@ -6,6 +6,9 @@ import com.levelblock.literalalura.model.LibroDTO;
 import com.levelblock.literalalura.repository.LibroRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @Service
 public class LibroService {
@@ -43,5 +46,18 @@ public class LibroService {
         // Guarda el libro junto con los autores
         libroRepository.save(libroEntity);
         return true;
+    }
+
+    // Método para obtener todos los libros guardados en la base de datos
+    public List<Libro> obtenerLibrosGuardados() {
+        return libroRepository.findAll(); // Devuelve todos los libros guardados
+    }
+
+    // Método para buscar libros por autor
+    public List<Libro> buscarLibrosPorAutor(String nombreAutor) {
+        return libroRepository.findAll().stream()
+                .filter(libro -> libro.getAutores().stream()
+                        .anyMatch(autor -> autor.getNombre().toUpperCase().contains(nombreAutor)))
+                .collect(Collectors.toList());
     }
 }

@@ -17,9 +17,9 @@ public class Libro {
     private String idioma;
     private Integer numeroDescargas;
 
-    @OneToMany(mappedBy = "libro", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "libro", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Autor> autores = new ArrayList<>();
-
+    public Libro() {}
     // Constructor, getters y setters
     public Libro(String titulo, String idioma, Integer numeroDescargas) {
         this.titulo = titulo;

@@ -16,7 +16,7 @@ public class Autor {
     @ManyToOne
     @JoinColumn(name = "libro_id") // La clave foránea en la tabla de Autor
     private Libro libro;
-
+    public Autor(){}
     public Autor(String nombre, Integer anioNacimiento, Integer anioMuerte) {
         this.nombre = nombre;
         this.anioNacimiento = anioNacimiento;
