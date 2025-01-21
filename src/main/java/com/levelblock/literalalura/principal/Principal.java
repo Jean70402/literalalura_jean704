@@ -30,9 +30,12 @@ public class Principal {
                 1 - Buscar libro por título
                 2 - Mostrar libros guardados
                 3 - Mostrar libros por autor
+                4 - Listar todos los autores
+                5 - Listar autores vivos en un año
+                6 - Listar libros por idioma
                 0 - Salir
                 **********************************************************************
-                Ingrese la opción (0-5):
+                Ingrese la opción (0-6):
                 """;
             System.out.println(menu);
 
@@ -41,10 +44,10 @@ public class Principal {
                 try {
                     opcion = scanner.nextInt();
                     scanner.nextLine();  // Limpiar el buffer de entrada
-                    if (opcion >= 0 && opcion <= 3) {
+                    if (opcion >= 0 && opcion <= 6) {
                         break; // Opción válida
                     } else {
-                        System.out.println("Opción inválida, por favor ingrese una opción entre 0 y 3.");
+                        System.out.println("Opción inválida, por favor ingrese una opción entre 0 y 6.");
                     }
                 } catch (Exception e) {
                     System.out.println("Entrada no válida. Por favor, ingrese un número.");
@@ -61,6 +64,15 @@ public class Principal {
                     break;
                 case 3:
                     mostrarLibrosPorAutor(scanner);
+                    break;
+                case 4:
+                    listarTodosLosAutores();
+                    break;
+                case 5:
+                    listarAutoresVivosEnUnAnio(scanner);
+                    break;
+                case 6:
+                    listarLibrosPorIdioma(scanner);
                     break;
                 case 0:
                     System.out.println("Cerrando la aplicación...");
@@ -132,5 +144,48 @@ public class Principal {
             System.out.println("***********************************\n\n");
         }
     }
+    // Método para manejar la opción de mostrar todos los autores
+    private void listarTodosLosAutores() {
+        var autores = libroService.listarTodosLosAutores();
+        if (autores.isEmpty()) {
+            System.out.println("No se encontraron autores.");
+        } else {
+            autores.forEach(autor -> System.out.printf("Autor: %s, Nacimiento: %d, Muerte: %d%n",
+                    autor.getNombre(), autor.getAnioNacimiento(), autor.getAnioMuerte()));
+        }
+    }
 
+    // Método para manejar la opción de listar autores vivos en un año
+    private void listarAutoresVivosEnUnAnio(Scanner scanner) {
+        System.out.println("Ingrese el año para buscar autores vivos:");
+        int año = scanner.nextInt();
+        scanner.nextLine();  // Limpiar el buffer
+        var autoresVivos = libroService.listarAutoresVivosEnUnAnio(año);
+        if (autoresVivos.isEmpty()) {
+            System.out.println("No se encontraron autores vivos en ese año.");
+        } else {
+            autoresVivos.forEach(autor -> System.out.printf("Autor: %s, Nacimiento: %d, Muerte: %d%n",
+                    autor.getNombre(), autor.getAnioNacimiento(), autor.getAnioMuerte()));
+        }
+    }
+    // Metodo para manejar la opción de listar libros por idioma
+    private void listarLibrosPorIdioma(Scanner scanner) {
+        System.out.println("Ingrese el idioma para buscar los libros:");
+        System.out.println("Algunos Idiomas disponibles :"+
+                """
+                        
+                        en
+                        es
+                        fr
+                        fi
+                        """);
+        String idioma = scanner.nextLine();
+        var librosPorIdioma = libroService.listarLibrosPorIdioma(idioma);
+        if (librosPorIdioma.isEmpty()) {
+            System.out.println("No se encontraron libros para ese idioma.");
+        } else {
+            librosPorIdioma.forEach(libro -> System.out.printf("Título: %s, Autor: %s, Número de descargas: %d%n",
+                    libro.getTitulo(), libro.getAutores(), libro.getNumeroDescargas()));
+        }
+    }
 }
