@@ -64,4 +64,8 @@ public class Autor {
     public void setLibro(Libro libro) {
         this.libro = libro;
     }
+    @Override
+    public String toString() {
+        return nombre; // Aquí puedes personalizarlo para mostrar más información si es necesario
+    }
 }

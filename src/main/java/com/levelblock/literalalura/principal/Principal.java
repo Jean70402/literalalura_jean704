@@ -26,10 +26,13 @@ public class Principal {
 
         while (opcion != 0) {
             var menu = """
+                **********************************************************************
                 1 - Buscar libro por título
                 2 - Mostrar libros guardados
                 3 - Mostrar libros por autor
                 0 - Salir
+                **********************************************************************
+                Ingrese la opción (0-5):
                 """;
             System.out.println(menu);
 
@@ -61,12 +64,14 @@ public class Principal {
                     break;
                 case 0:
                     System.out.println("Cerrando la aplicación...");
+                    System.exit(0); // Detiene la aplicación
                     break;
             }
         }
     }
 
     private void buscarLibroPorTitulo(Scanner scanner) {
+        System.out.println("***********************************");
         System.out.println("Ingrese el título del libro para buscar:");
         String titulo = scanner.nextLine();
 
@@ -74,13 +79,19 @@ public class Principal {
         if (libroDTO == null) {
             System.out.println("Libro no encontrado.");
         } else {
-            System.out.printf("Título: %s, Idioma: %s, Número de descargas: %d%n",
-                    libroDTO.titulo(), libroDTO.idioma(), libroDTO.numeroDescargas());
+            System.out.println("***********************************");
+            System.out.printf("Título: %s, Autor: %s Idioma: %s, Número de descargas: %d%n",
+                    libroDTO.titulo(),libroDTO.autores(), libroDTO.idioma(), libroDTO.numeroDescargas());
+            System.out.println("***********************************\n\n");
 
             if (libroService.guardarLibro(libroDTO)) {
+                System.out.println("***********************************");
                 System.out.println("Libro guardado exitosamente en la base de datos.");
+                System.out.println("***********************************\n\n");
             } else {
+                System.out.println("***********************************");
                 System.out.println("El libro ya existe en la base de datos.");
+                System.out.println("***********************************\n\n");
             }
         }
     }
@@ -89,10 +100,14 @@ public class Principal {
         // Aquí llamamos a la lógica para mostrar los libros que están guardados en la base de datos
         var librosGuardados = libroService.obtenerLibrosGuardados();  // Supón que tienes un método para obtener los libros guardados
         if (librosGuardados.isEmpty()) {
+            System.out.println("***********************************");
             System.out.println("No se han guardado libros.");
+            System.out.println("***********************************\n\n");
         } else {
-            librosGuardados.forEach(libro -> System.out.printf("Título: %s, Idioma: %s, Número de descargas: %d%n",
-                    libro.getTitulo(), libro.getIdioma(), libro.getNumeroDescargas()));
+            System.out.println("***********************************");
+            librosGuardados.forEach(libro -> System.out.printf("Título: %s, Autor: %s Idioma: %s, Número de descargas: %d%n",
+                    libro.getTitulo(),libro.getAutores(), libro.getIdioma(), libro.getNumeroDescargas()));
+            System.out.println("***********************************\n\n");
         }
     }
 
@@ -109,9 +124,12 @@ public class Principal {
         if (librosPorAutor.isEmpty()) {
             System.out.println("No se encontraron libros para ese autor.");
         } else {
+            System.out.println("***********************************");
+            System.out.println("Autor:"+ autorBusqueda);
             librosPorAutor.forEach(libro ->
                     System.out.printf("Título: %s, Idioma: %s, Número de descargas: %d%n",
                             libro.getTitulo(), libro.getIdioma(), libro.getNumeroDescargas()));
+            System.out.println("***********************************\n\n");
         }
     }
 
